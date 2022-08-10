@@ -1,0 +1,22 @@
+---
+- name: Deploy Web Server
+  hosts: node1
+  gather_facts: no
+  tasks:
+  - name: Install httpd Package
+    ansible.builtin.yum:
+      name: httpd
+
+  - name: Open New Http Port
+    ansible.posix.firewalld:
+      immediate: yes
+      permanent: yes 
+      port: 80
+      state: enabled
+    
+  - name: Start Http Service
+    ansible.builtin.systemd:
+      name: httpd
+      state: started
+      enabled: true
+
